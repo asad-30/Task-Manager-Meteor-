@@ -1,0 +1,19 @@
+.table {
+	margin: 0 auto;
+	width: 800px;
+}
+
+th {
+	padding: 5px;
+	text-align: center;
+}
+
+.userdetailview h1{
+	width: 400px;
+	margin: 0 auto;
+}
+
+#TaskForm {
+	width: 600px;
+	margin: 0 auto;
+}

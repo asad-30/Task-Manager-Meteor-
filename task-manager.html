@@ -1,0 +1,238 @@
+<!-- ******************************************************************************************* -->
+<!-- ******************************************************************************************* -->
+								<!-- User List View -->
+<!-- ******************************************************************************************* -->
+<!-- ******************************************************************************************* -->
+<template name="users">
+	<div class="row">
+		<div class="small-6 small-centered columns">
+			<br><h1>Users List View</h1>
+			<a href="tasks" class="button">Tasks</a>
+			<a class="button" data-reveal-id="UserModal">Add User</a>
+		</div>
+	</div>		
+	
+	<div id="UserModal" class="reveal-modal" data-reveal>
+		<label>Name: <span style="color: red;">*</span><input type="text" id="user-name"></label>
+		<label>Email: <span style="color: red;">*</span><input type="email" id="user-email"></label>
+		<button class="add-user">Submit</button>
+		<a class="close-reveal-modal" aria-label="Close">&#215;</a>
+	</div>	
+	
+	<div class="row">
+		<div class="small-9 text-centered columns">
+			<table>
+				<thead>
+					<th>Name</th>
+					<th>Email</th>
+					<th></th>
+				</thead>
+				{{#each users}}
+				<tbody>
+					{{> uname}}
+				</tbody>
+				{{/each}}
+			</table>	
+		</div>
+	</div>
+</template>
+
+<template name="uname">
+  <tr>
+  	<th><a href="/user-detail/{{this._id}}">{{name}}</a></th>
+  	<th>{{email}}</th>
+  	<th><button style="background-color:red;" class="delete-user">Delete</button></th>
+  </tr>
+</template>
+
+<!-- ******************************************************************************************* -->
+								<!-- USER DETAIL -->
+<!-- ******************************************************************************************* -->
+
+<!-- User Detail -->
+<template class="userdetailview" name="userdetail">
+	
+	<h1 class="small-offset-5">User Details View</h1>
+	<a class="button small-offset-5" href="/users">Users</a>
+	<table class="table">
+		<thead>
+			<th>Name</th>
+			<th>Email</th>
+		</thead>
+		<tbody>
+			<th>{{name}}</th>
+			<th>{{email}}</th>
+		</tbody>
+	</table>
+
+	<h1 class="small-offset-5">Pending Tasks</h1>
+	<table class="table">
+		<thead>
+			<th>Name</th>
+			<th>Description</th>
+			<th>Deadline</th>
+			<th></th>
+		</thead>
+		<tbody>
+			{{#each pendingtasks}}
+			<tr>
+				<th>{{name}}</th>
+				<th>{{description}}</th>
+				<th>{{deadline}}</th>
+				<th><button style="background-color:green;" id="complete">Complete</button></th>
+			</tr>
+			{{/each}}
+		</tbody>
+	</table>
+</template>	
+
+<!-- ******************************************************************************************* -->
+<!-- ******************************************************************************************* -->
+								<!-- Task List View -->
+<!-- ******************************************************************************************* -->
+<!-- ******************************************************************************************* -->
+<template name="tasks">
+	<div class="row">
+		<div class="small-6 small-centered columns">
+			<br><h1>Task List View</h1>
+			<a href="users" class="button">Users</a>
+			<a class="small-offset-1 button" data-reveal-id="TaskModal">Add Task</a>
+		</div>
+		
+		<label class="small-5 columns">Filter by: 
+			<select  id="filter-by">
+				<option value="all">All</option>
+				<option value="completed">Completed</option>
+				<option value="pending">Pending</option>
+			</select>
+		</label>
+
+		<label class="small-5 columns">Sort by: 
+			<select  id="sort-by">
+				<option value="name">Name</option>
+				<option value="assignedUserName">Username</option>
+				<option value="dateCreated">Date Created</option>
+				<option value="deadline">Deadline</option>
+			</select>
+		</label>
+
+		<label class="small-5 columns">Order by: 
+			<select  id="order-by">
+				<option value="asc">Ascending</option>
+				<option value="desc">Descending</option>
+			</select>
+		</label><br>
+	</div>		
+	<br>
+	
+	<div class="row">
+		<a id="skip-prev" class="small-3 button columns">Prev</a>
+		<a id="skip-next" class="small-3 button columns">Next</a>
+	</div>
+
+	<div id="TaskModal" class="reveal-modal" data-reveal>
+		<label>Name: <span style="color: red;">*</span><input type="text" id="task-name"></label>
+		<label>Description: <input type="text" id="task-description"></label>
+		<label>Deadline: <span style="color: red;">*</span><input type="date" id="task-deadline"></label>
+		<label>Completed: 
+			<select  id="task-completed">
+				<option value="false">False</option>
+				<option value="true">True</option>
+			</select>
+		</label>
+			<label>Assigned User: 
+				<select  id="assigned-user">
+					{{#each users}}
+					<option>{{name}}</option>
+					{{/each}}
+				</select>
+			</label>
+		<button class="add-task">Submit</button>
+		<a class="close-reveal-modal" aria-label="Close">&#215;</a>
+	</div>	
+	
+	<div class="row">
+		<div class="small-9 text-centered columns">
+			<table>
+				<thead>
+					<th>Name</th>
+					<th>Assigned User</th>
+					<th></th>
+				</thead>
+				{{#each currtasks}}
+				<tbody>
+					<th><a href="/task-detail/{{this._id}}">{{name}}</a></th>
+					<th>{{assignedUserName}}</th>	
+					<th><button style="background-color:red;" class="delete-task">Delete</button></th>
+				</tbody>
+				{{/each}}
+			</table>	
+		</div>
+	</div>
+</template>
+
+<!-- ******************************************************************************************* -->
+								<!-- TASK DETAIL -->
+<!-- ******************************************************************************************* -->
+
+<!-- Task Detail -->
+<template class="taskdetailview" name="taskdetail">
+	
+	<h1 class="small-offset-5">Task Details View</h1>
+	<a style="background-color: #53FF98;" class="button small-offset-4" href="/tasks">Tasks</a>
+	<a style="background-color: #836283;" class="button small-offset-1" href="/edit-task/{{this._id}}">Edit Task</a>
+
+	<h1 class="small-offset-5">Task Detail</h1>
+	<table style="width= auto;" class="table">
+		<thead>
+			<th>Name</th>
+			<th>Description</th>
+			<th>Deadline</th>
+			<th>Assigned User</th>
+			<th></th>
+		</thead>
+		<tbody>
+			<tr>
+				<th>{{name}}</th>
+				<th>{{description}}</th>
+				<th>{{deadline}}</th>
+				<th>{{assignedUserName}}</th>
+				<th><button style="background-color:yellow; color: black;" id="status">Change Status</button></th>
+			</tr>
+		</tbody>
+	</table>
+	<h1 class="small-offset-5" id="currState"></h1>
+</template>	
+
+<!-- ******************************************************************************************* -->
+								<!-- EDIT TASK -->
+<!-- ******************************************************************************************* -->
+
+<template name="edittask">
+	<div class="row">
+		<div class="small-6 small-centered columns">
+			<br><h1>Edit Task</h1>
+			<a href="/tasks" class="button">Tasks</a>
+		</div>
+	</div>
+	<div id="TaskForm">
+		<label>Name: <span style="color: red;">*</span><input type="text" id="task-name" required></label>
+		<label>Description: <input type="text" id="task-description"></label>
+		<label>Deadline: <span style="color: red;">*</span><input type="date" id="task-deadline"></label>
+		<label>Completed: 
+			<select  id="task-completed">
+				<option value="false">False</option>
+				<option value="true">True</option>
+			</select>
+		</label>
+			<label>Assigned User: 
+				<select  id="assigned-user">
+					<option>unassigned</option>
+					{{#each users}}
+					<option>{{name}}</option>
+					{{/each}}
+				</select>
+			</label>
+		<br><button class="edit-task">Submit</button>
+	</div>
+</template>
